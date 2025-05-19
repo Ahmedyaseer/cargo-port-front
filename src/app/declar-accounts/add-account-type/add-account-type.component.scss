@@ -1,0 +1,153 @@
+// Global Variables
+$primary-color: #f3f3f5; // Customize as per theme
+$secondary-color: #f5f5f5;
+$text-color: #333;
+$border-color: #e0e0e0;
+
+// Accordion Styling
+mat-accordion {
+  margin: 20px 0;
+  background-color: $secondary-color;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  mat-expansion-panel {
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    mat-expansion-panel-header {
+      background-color: $primary-color;
+      color: white;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px 8px 0 0;
+
+      mat-panel-title {
+        display: flex;
+        align-items: center;
+      }
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+        cursor: pointer;
+      }
+    }
+
+    mat-checkbox {
+      margin: 8px 16px;
+      font-size: 1rem;
+      color: $text-color;
+
+      .mat-checkbox-inner-container {
+        height: 20px;
+        width: 20px;
+      }
+
+      .mat-checkbox-label {
+        margin-left: 10px;
+      }
+
+      &:hover {
+        background-color: lighten($primary-color, 40%);
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+// Form Styling
+form {
+  margin: 20px 0;
+
+  mat-form-field {
+    width: 100%;
+    margin: 10px 0;
+
+    mat-label {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    mat-icon {
+      color: $primary-color;
+    }
+
+    input, textarea {
+      font-size: 1rem;
+      color: $text-color;
+    }
+
+    mat-error {
+      font-size: 0.9rem;
+      color: red;
+    }
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    // background-color: $primary-color;
+    // color: blue;
+    // border: none;
+    border-radius: 6px;
+    font-size: 0.5rem;
+    font-weight: 400;
+    text-transform: uppercase;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+
+    // &:disabled {
+    //   background-color: lighten($primary-color, 30%);
+    //   color: $border-color;
+    // }
+  }
+}
+
+// Layout Adjustments
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.col-xl-12, .col-lg-12, .col-md-12, .col-sm-12 {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+// Add Custom Scrollbar
+mat-accordion {
+  max-height: 500px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $secondary-color;
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary-color;
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}

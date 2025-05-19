@@ -1,0 +1,30 @@
+.custom-file-input {
+    position: relative;
+    display: inline-block;
+  
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      width: 100%; // Ensures the button width spans the parent container
+    }
+  
+    .hidden-file-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%; // Covers the entire button width
+      height: 100%; // Covers the entire button height
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
+  
+  .file-feedback {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #4caf50;
+  }
+  

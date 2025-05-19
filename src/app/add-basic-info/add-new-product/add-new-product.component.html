@@ -1,0 +1,99 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    }
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2>
+              <mat-icon class="material-icons-outlined color-primary" style="vertical-align: middle;">add_circle</mat-icon>
+              Add New Product
+            </h2>
+          </div>
+          <div class="body">
+            <form class="register-form m-4" [formGroup]="register" (ngSubmit)="onRegister()">
+              <!-- Product Name -->
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Product Name</mat-label>
+                    <input matInput formControlName="product" required>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>inventory</mat-icon>
+                    @if (register.get('product')?.hasError('required')) {
+                    <mat-error>
+                      Product name is required
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Package Type -->
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Package Type</mat-label>
+                    <input matInput formControlName="packageType" required>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>category</mat-icon>
+                    @if (register.get('packageType')?.hasError('required')) {
+                    <mat-error>
+                      Package Type is required
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Details -->
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Details</mat-label>
+                    <textarea matInput formControlName="details"></textarea>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>description</mat-icon>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Upload Photo -->
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <div class="custom-file-input">
+                    <button mat-raised-button color="accent" type="button">
+                      <mat-icon>upload_file</mat-icon> Upload Photo
+                    </button>
+                    <input 
+                      type="file" 
+                      class="hidden-file-input"
+                      (change)="onFileSelected($event)"
+                      accept="image/*"
+                    />
+                  </div>
+                  @if (selectedFile) {
+                  <span class="file-feedback">Selected File: {{ selectedFile!.name}}</span>
+                  }
+                </div>
+              </div>
+              
+
+              <!-- Submit -->
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 text-center">
+                  <button class="btn-space" mat-raised-button color="primary" [disabled]="!register.valid" (click)="passParameter()">
+                    <mat-icon class="material-icons-outlined">send</mat-icon>
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

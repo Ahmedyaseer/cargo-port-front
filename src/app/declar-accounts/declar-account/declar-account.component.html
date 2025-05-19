@@ -1,0 +1,217 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+      <div class="block-header">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      }
+
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2><strong>Create Account</strong></h2>
+            
+          </div>
+          <div class="body">
+            <mat-vertical-stepper [linear]="isLinear" #stepper>
+              <!-- Step 1: Account Information -->
+              <mat-step [stepControl]="VFormGroup1!">
+                <form [formGroup]="VFormGroup1!">
+                  <ng-template matStepLabel>Account Information</ng-template>
+
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Account Name</mat-label>
+                    <input matInput formControlName="accountName" required>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Account Type</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>add_circle
+                    </mat-icon>
+                    <mat-select formControlName="accountType" required >
+                    @for (account of accountName; track $index) {
+
+                        <mat-option [value]="account.id" >{{ account.name }}</mat-option>
+                      }
+                    </mat-select>
+                    @if (VFormGroup1!.get('accountType')?.hasError('required')) {
+
+                      <mat-error>
+                        Account type is required.
+                      </mat-error>
+                    }
+                  </mat-form-field>
+
+                  <div>
+                    <button mat-raised-button matStepperNext color="primary" [disabled]="!VFormGroup1!.valid">
+                      Next
+                    </button>
+                  </div>
+                </form>
+              </mat-step>
+
+              <!-- Step 2: Address Information -->
+              <mat-step [stepControl]="VFormGroup2!">
+                <form [formGroup]="VFormGroup2!">
+                  <ng-template matStepLabel>Address Information</ng-template>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Address</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>address</mat-icon>
+                    <textarea matInput formControlName="address" placeholder="Ex. 1 Main St, New York, NY" required></textarea>
+                    @if (VFormGroup2!.get('address')?.hasError('required')) {
+
+                      <mat-error>
+                        Address is required.
+                      </mat-error>
+                    }
+                  </mat-form-field>
+
+                  <div>
+                    <button mat-raised-button matStepperPrevious color="warn">Back</button>
+                    <button mat-raised-button matStepperNext color="primary" [disabled]="!VFormGroup2!.valid">
+                      Next
+                    </button>
+                  </div>
+                </form>
+              </mat-step>
+
+              <!-- Step 3: Nearest Ports -->
+
+              <!-- PORT 1 -->
+              <mat-step>
+                <form [formGroup]="VFormGroup3!">
+                  <ng-template matStepLabel>Nearest Ports</ng-template>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Port 1</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>port</mat-icon>
+                    <mat-select formControlName="port1" required>
+                      @for (port of ports; track $index) {
+
+                        <mat-option  [value]="port.id">{{ port.name }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+
+                  <!-- PORT 2 -->
+
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Port 2</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>port</mat-icon>
+                    <mat-select formControlName="port2" required>
+                      @for (port of ports; track $index) {
+
+                        <mat-option [value]="port.id">{{ port.name }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+
+                  <!-- PORT 3 -->
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Port 3</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>port</mat-icon>
+                    <mat-select formControlName="port3" required>
+                      @for (port of ports; track $index) {
+
+                        <mat-option [value]="port.id">{{ port.name }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+
+                  <!-- PORT 4 -->
+
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Port 4</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>port</mat-icon>
+                    <mat-select>
+                      @for (port of ports; track $index) {
+
+                        <mat-option [value]="port.id">{{ port.name }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+
+                  <div>
+                    <button mat-raised-button matStepperPrevious color="warn">Back</button>
+                    <button mat-raised-button matStepperNext color="primary" [disabled]="!VFormGroup3!.valid">
+                      Next
+                    </button>
+                  </div>
+                </form>
+              </mat-step>
+
+              <!-- Step 4: Account Numbers -->
+              <mat-step [stepControl]="VFormGroup4!">
+                <form [formGroup]="VFormGroup4!">
+                  <ng-template matStepLabel>Account Numbers</ng-template>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>TAX Number</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>receipt</mat-icon>
+                    <input matInput formControlName="taxNumber" type="number" required placeholder="Enter numbers only">
+                    @if (VFormGroup4.get('taxNumber')?.hasError('required')) {
+
+                      <mat-error>
+                        Tax number is required.
+                      </mat-error>
+                    }
+                    @if (VFormGroup4.get('taxNumber')?.hasError('pattern')) {
+                      <mat-error>
+                        Only numeric values are allowed.
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" required>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>mail</mat-icon>
+
+                    @if (VFormGroup4!.get('email')?.hasError('required')) {
+
+                      <mat-error>
+                        Email is required.
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Telephone Number</mat-label>
+                    <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>phone</mat-icon>
+                    <input matInput formControlName="telePhone" required type="number" placeholder="Enter numbers only">
+                    @if (VFormGroup4!.get('telePhone')?.hasError('required')) {
+                      <mat-error>
+                        Telephone number is required.
+                      </mat-error>
+                    }
+                    @if (VFormGroup4.get('telePhone')?.hasError('pattern')) {
+                      <mat-error>
+                        Only numeric values are allowed.
+                      </mat-error>
+                    }
+                  </mat-form-field>
+
+                  <div>
+                    <button mat-raised-button matStepperPrevious color="warn">Back</button>
+                    <button mat-raised-button matStepperNext color="primary" [disabled]="!VFormGroup4!.valid">
+                      Next
+                    </button>
+                  </div>
+                </form>
+              </mat-step>
+
+              <!-- Step 5: Submission -->
+              <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+                <p>You are now done.</p>
+                <div>
+                  <button mat-raised-button matStepperPrevious color="warn">Back</button>
+                  <button mat-raised-button color="primary" (click)="passParameter()">Submit</button>
+                </div>
+              </mat-step>
+            </mat-vertical-stepper>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

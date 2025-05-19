@@ -1,0 +1,62 @@
+<div class="paginator">
+    <!-- Page Size Dropdown -->
+     <div class="d-flex align-items-baseline" >
+      <span>Showing</span>
+      <mat-form-field appearance="outline" style="width: 80px" >
+        <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
+
+
+          @for(size of pageSizeOptions; track size) {
+            <mat-option [value]="size">
+              {{ size }} 
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      
+    <span>of {{ totalElements }} results</span>
+</div>
+<div class="d-flex">
+    <!-- Page Navigation Buttons -->
+
+    <button class="btn_style" (click)="onPageClick(0)" [disabled]="pageIndex === 0">
+      <mat-icon>first_page</mat-icon>
+  </button>
+
+    <button class="btn_style"  (click)="onPageClick(pageIndex - 1)" [disabled]="pageIndex === 0">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    
+
+    @if (visiblePages().length > 0) {
+      @for (page of visiblePages(); track page) {
+        <button 
+          class="btn"
+          (click)="onPageClick(page - 1)" 
+          [class.active]="pageIndex === (page - 1)">
+          {{ page }}
+        </button>
+      }
+    } @else {
+      <button 
+        class="btn"
+        (click)="onPageClick(0)" 
+        [class.active]="pageIndex === 0">
+        0
+      </button>
+    }
+    
+  
+
+  
+    <button class="btn_style"  (click)="onPageClick(pageIndex + 1)" [disabled]="pageIndex >= totalPages - 1">
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    <button class="btn_style" (click)="onPageClick(totalPages - 1)" [disabled]="pageIndex >= totalPages - 1">
+      <mat-icon>last_page</mat-icon>
+  </button>
+</div>
+  </div>
+  

@@ -1,0 +1,77 @@
+<section class="content">
+  <div class="content-block">
+    <!-- Breadcrumb -->
+    <div class="block-header">
+      <app-breadcrumb title="Show Ports" [items]="['Basic Data']" active_item="Show Ports"></app-breadcrumb>
+    </div>
+
+    <!-- Table -->
+    <div class="row clearfix">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="body">
+            <div class="ngxTableHeader">
+              <ul class="header-buttons-left ms-0 mb-0">
+                <li class="dropdown">
+                  <h2>Show Ports</h2>
+                </li>
+                <li class="dropdown m-l-20">
+                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                  <input
+                    id="search-input"
+                    placeholder="Search"
+                    type="text"
+                    class="browser-default search-field"
+                    (keyup)="filterDatatable($event)"
+                    aria-label="Search box"
+                  />
+                </li>
+              </ul>
+              <ul class="header-buttons">
+                <li>
+                  <button mat-mini-fab color="primary" routerLink="../addPort">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <ngx-datatable
+              #table
+              class="material"
+              [rows]="filteredData"
+              [columns]="columns"
+              [sortType]="SortType.multi"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="60"
+              [limit]="10"
+            >
+             
+
+              <!-- Other Columns -->
+              <ngx-datatable-column name="Port Name" prop="portName"></ngx-datatable-column>
+              <ngx-datatable-column name="Port Code" prop="portCode"></ngx-datatable-column>
+              <ngx-datatable-column name="City" prop="city"></ngx-datatable-column>
+              <ngx-datatable-column name="State" prop="state"></ngx-datatable-column>
+              <ngx-datatable-column name="Country" prop="country"></ngx-datatable-column>
+
+              <!-- Action Buttons -->
+              <ngx-datatable-column name="Actions" [sortable]="false" [width]="120">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button class="btn tblActnBtn" (click)="editRow(row)">
+                    <i class="material-icons">mode_edit</i>
+                  </button>
+                  <button class="btn tblActnBtn" (click)="deleteRow(row)">
+                    <i class="material-icons">delete</i>
+                  </button>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

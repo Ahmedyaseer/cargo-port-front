@@ -1,0 +1,215 @@
+<div class="card-container">
+<div class="tbl-export-btn row align-items-center me-0 ms-0  ">
+
+  <!-- Button Group (Col 8) -->
+  <div class="tbl-export-btn col-md-4 d-flex gap-2 align-items-center">
+<!-- 
+    @if(addButton.isrender) {
+    <div matTooltip="{{ 'LABELS.add' | translate }}">
+      <button mat-icon-button class="action-button" (click)="addButton.callback()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    } -->
+    <div matTooltip="{{ 'LABELS.XLSX' | translate }}">
+      <button mat-icon-button class="action-button" (click)="exportExcel()">
+<mat-icon (click)="exportExcel()">download</mat-icon>
+      </button>
+    </div>
+    <mat-menu #columnMenu="matMenu" class="column-menu">
+      <div class="column-menu-header" (click)="$event.stopPropagation()">
+        <mat-checkbox [checked]="areAllColumnsVisible()" [indeterminate]="areSomeColumnsVisible()"
+          (change)="toggleAllColumns($event.checked)">
+          {{'LABELS.selectAll' | translate}}
+        </mat-checkbox>
+      </div>
+      <mat-divider></mat-divider>
+      @for (column of columns; track column.key) {
+      <button mat-menu-item (click)="$event.stopPropagation()">
+        <mat-checkbox [checked]="isColumnVisible(column.key)" (change)="toggleColumnVisibility(column.key)">
+          {{column.label}}
+        </mat-checkbox>
+      </button>
+      }
+    </mat-menu>
+    <div matTooltip="{{ 'LABELS.columns' | translate }}">
+    <button mat-icon-button [matMenuTriggerFor]="filterMenu" class="action-button">
+      <mat-icon>view_headline</mat-icon>
+    </button>
+    </div>
+     @if(riverUnitComposite && riverUnitComposite().isEnabled) {
+    <div [matTooltip]="riverUnitComposite().tooltip || 'وحدة النهر'">
+      <button mat-icon-button class="action-button" (click)="riverUnitComposite().callback()">
+        <mat-icon>{{ riverUnitComposite().icon || 'directions_boat' }}</mat-icon>
+      </button>
+    </div>
+  }
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>{{'LABELS.actions' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="btn-container">
+        @for (action of actions; track action.icon) {
+          <button mat-icon-button (click)="action.callback(row)" 
+                  [matTooltip]="action.label">
+            <mat-icon>{{ action.icon }}</mat-icon>
+          </button>
+        }
+      </mat-cell>
+    </ng-container>
+
+    <!-- Filter Menu -->
+    <mat-menu #filterMenu="matMenu">
+      @for (column of columns; track column.key) {
+      <button mat-menu-item (click)="$event.stopPropagation()">
+        <mat-checkbox [checked]="isColumnVisible(column.key)" (change)="toggleColumnVisibility(column.key)">
+          {{column.label}}
+        </mat-checkbox>
+      </button>
+      }
+    </mat-menu>
+    <ng-content></ng-content>
+
+    <div [hidden]="!selection.hasValue()" matTooltip="{{ 'LABELS.delete' | translate }}">
+
+      <!-- @if(addButton.isrender){
+      <button mat-icon-button class="action-button" style="border-radius: 10px !important;"
+        (click)="deleteSelectedItems()">
+        <mat-icon>delete</mat-icon>
+      </button>
+      } -->
+
+    </div>
+
+  </div>
+
+  <!-- Search Input (Col 4) -->
+  <div class="col-md-8 ">
+    <app-breadcrumb></app-breadcrumb>
+  </div>
+
+</div>
+
+<mat-divider></mat-divider>
+
+
+<mat-sidenav-container dir="rtl" class="details-sidenav-container">
+  <mat-sidenav #sidenav mode="side" position="end" [(opened)]="isSidenavOpen" class="details-sidenav">
+    <span>{{ 'LABELS.details' | translate }} </span>
+    <div *ngIf="selectedRow">
+      @for (col of columns; track col.key) {
+        <p><strong>{{ col.label }}:</strong> {{ getValue(selectedRow, col.key) }}</p>
+      }
+    </div>
+    <button mat-button (click)="closeSidenav()">{{ 'LABELS.close' | translate }}</button>
+  </mat-sidenav>
+
+<div class="table-container">
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)" class="mat-elevation-z0" dir="rtl">
+  <caption> </caption>
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Dynamic Columns -->
+  @for (col of columns; track col.key) {
+    <ng-container [matColumnDef]="col.key">
+      <!-- Header title -->
+      <mat-header-cell *matHeaderCellDef style="display: flex; flex-direction: column;">
+        @if(col.sortable){
+          <span class="column-label" [mat-sort-header]="col.key">{{ col.label }}</span>
+        } @else {
+          <span class="column-label font-style">{{ col.label }}</span>
+        }
+        @if(col.filterable){
+          <input matInput 
+                 (blur)="applyColumnFilter($event, col.key)" 
+                 type="text"
+                 class="search-field"  />
+        }
+      </mat-header-cell>
+  
+      <!-- Cell content -->
+      <mat-cell *matCellDef="let row">
+        <span class="cell-value">{{ getValue(row, col.key) }}</span>
+      </mat-cell>
+    </ng-container>
+  }
+  
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>{{'LABELS.actions' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let row" class="btn-container">
+      @for (action of actions; track action.icon) {
+        @if (action.description) {
+          <button mat-icon-button (click)="openSidenav(row)">
+            <mat-icon>{{ action.icon }}</mat-icon>
+          </button>
+        }
+        @else {
+          <!-- For edit, delete, normal actions -->
+          @if (selection.hasValue() && action.icon === 'edit') {
+            <button mat-icon-button (click)="action.callback(row)" [ngClass]="{
+              'edit-action': action.icon === 'edit'
+            }" matTooltip="{{ 'LABELS.edit' | translate }}">
+              <mat-icon class="edit-icon">{{ action.icon }}</mat-icon>
+            </button>
+          }
+          @if (!selection.hasValue()) {
+            <button mat-icon-button (click)="action.callback(row)" [ngClass]="{
+              'edit-action': action.icon === 'edit',
+              'delete-action': action.icon === 'delete'
+            }" [matTooltip]="action.icon === 'edit' ? ('LABELS.edit' | translate) : (action.icon === 'delete' ? ('LABELS.delete' | translate) : action.label)">
+              <mat-icon [ngClass]="{
+                'edit-icon': action.icon === 'edit',
+                'delete-icon': action.icon === 'delete'
+              }">{{ action.icon }}</mat-icon>
+            </button>
+          }
+        }
+      }
+    </mat-cell>
+    
+  </ng-container>
+
+
+  <!-- Filter row -->
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="filter-row"></mat-header-row>
+
+  <!-- Data rows -->
+  <mat-row *matRowDef="let row; columns: displayedColumns;" [matTooltip]="getRowTooltip(row)" matTooltipClass="row-tooltip" class="table-row"></mat-row>
+</table>
+
+
+<!-- No Data Message -->
+@if (dataSource.data.length === 0) {
+  <div class="no-data-message">
+    <p>{{ 'LABELS.noData' | translate }}</p>
+  </div>
+}
+
+</div>
+</mat-sidenav-container>
+
+<!-- Paginator -->
+<app-paginator
+  [totalElements]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  (pageChange)="onPageChange($event)">
+</app-paginator>
+</div>
+
+

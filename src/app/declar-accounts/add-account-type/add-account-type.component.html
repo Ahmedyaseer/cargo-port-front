@@ -1,0 +1,98 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- Breadcrumb -->
+      @for (breadscrum of breadscrums; track $index) {
+      <app-breadcrumb 
+        [title]="breadscrum.title" 
+        [items]="breadscrum.items" 
+        [active_item]="breadscrum.active">
+      </app-breadcrumb>
+      }
+    </div>
+
+    <!-- Form -->
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2>New Account Type</h2>
+          </div>
+          <div class="body">
+            <form [formGroup]="register" (ngSubmit)="passParameter()">
+              <!-- Account Name -->
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Account Name</mat-label>
+                <input matInput formControlName="account" required />
+                @if (register.get('account')?.hasError('required')) {
+                <mat-error>
+                  Account name is required
+                </mat-error>
+                }
+              </mat-form-field>
+
+              <!-- Details -->
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Details</mat-label>
+                <textarea matInput formControlName="details"></textarea>
+              </mat-form-field>
+              <mat-accordion>
+                <!-- Orders Screens -->
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>Orders Screens</mat-panel-title>
+                  </mat-expansion-panel-header>
+                  @for (option of modulesAndScreens['Orders Screens']; track $index) {
+                  <mat-checkbox
+                    [checked]="selectedScreens['Orders Screens'].includes(option)"
+                    (change)="onCheckboxChange('Orders Screens', option, $event.checked)">
+                    {{ option }}
+                  </mat-checkbox>
+                  }
+                </mat-expansion-panel>
+              
+                <!-- Basic Data Screens -->
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>Basic Data Screens</mat-panel-title>
+                  </mat-expansion-panel-header>
+                  @for (option of modulesAndScreens['Basic Data Screens']; track $index) {
+                  <mat-checkbox
+                    [checked]="selectedScreens['Basic Data Screens'].includes(option)"
+                    (change)="onCheckboxChange('Basic Data Screens', option, $event.checked)">
+                    {{ option }}
+                  </mat-checkbox>
+                  }
+                </mat-expansion-panel>
+              
+                <!-- Account Management Screens -->
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>Account Management Screens</mat-panel-title>
+                  </mat-expansion-panel-header>
+                  @for (option of modulesAndScreens['Account Management Screens']; track $index) {
+                  <mat-checkbox
+                    [checked]="selectedScreens['Account Management Screens'].includes(option)"
+                    (change)="onCheckboxChange('Account Management Screens', option, $event.checked)">
+                    {{ option }}
+                  </mat-checkbox>
+                  }
+                </mat-expansion-panel>
+              </mat-accordion>
+              
+              
+
+              <!-- Submit Button -->
+              <button 
+                mat-raised-button 
+                color="primary" 
+                [disabled]="!register.valid">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

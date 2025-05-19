@@ -1,0 +1,19 @@
+<section class="content">
+  <div class="container-fluid">
+    <app-table  
+      [columns]="columns"
+      [data]="data()" 
+      [actions]="actions"
+      [searchFields]="['name', 'address', 'countryName', 'cityName']"
+      [deleteAll]="getDeleteAll()"
+      [title]="'LABELS.ports' | translate"
+      [totalElements]="totalElements()"
+      [pageSize]="pageSize()"
+      [pageIndex]="pageIndex()"
+      (pageChange)="onPageChange($event)"
+      (sortChange)="onSortChange($event)"
+      (searchChange)="onSearchChange($event)"
+      ngSkipHydration>
+    </app-table>
+  </div>
+</section>
